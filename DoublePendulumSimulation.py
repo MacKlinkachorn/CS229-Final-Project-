@@ -2,10 +2,19 @@ from numpy import sin, cos
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as integrate
+import pickle
+from itertools import *
+
+
+"""
 import matplotlib.animation as animation
 import random
-import random
+import matplotlib.patches as mpatches
 
+from statsmodels.tsa.arima_model import ARMA
+from sklearn.metrics import r2_score
+import pandas as pd
+"""
 # foe each experiment value of l1,l2,m1,m2 and th1,th2,w1,w2 are same so explicitely add these features after training.
 
 G = 9.8  # acceleration due to gravity, in m/s^2
@@ -65,29 +74,36 @@ def animate(i):
 
 
 
-#ani = animation.FuncAnimation(fig, animate, np.arange(1, len(y)),
-#                            interval=15, blit=True, init_func=init)
-# ani.save('double_pendulum.mp4', fps=15)
+
+#ani.save('double_pendulum.mp4', fps=15)
 #plt.show()
 
-dt = 0.01
-t = np.arange(0.0, 100, dt)
+
 # th1 and th2 are the initial angles (degrees)
 # w10 and w20 are the initial angular velocities (degrees per second)
 
-
-#theta1 = np.random.randint(-20,20,size = 10)
-#theta2 = np.random.randint(-20,20,size = 10)
+#state = np.radians([4, 0, -17, 0])
+#y = integrate.odeint(derivs, state, t)
+#ani = animation.FuncAnimation(fig, animate, np.arange(1, len(y)),
+                                  #interval=15, blit=True, init_func=init)
+#plt.show()
+dt = 0.01
+t = np.arange(0.0, 20 , dt)
+theta1 = np.random.randint(-150,150,size = 5000)
+theta2 = np.random.randint(-150,150,size = 5000)
 # hard code it here,  can change to random
-theta1 = [ 8 ,-17 ,  4 , -5, -20  , 3 ,  7, -19, -17, -18]
-theta2 = [ 13, 12 , -17, -20 , 7 ,  2 ,-14, 10 , -8 , -6]
 w1 = 0.0
 w2 = 0.0
+
 # list of list storing timeseries for different initial conditions (10 by 10000)
-X1 = []
-X2 = []
-Y1 = []
-Y2 = []
+
+def pairwise(iterable):
+    "s -> (s0,s1), (s1,s2), (s2, s3), ..."
+    a, b = tee(iterable)
+    next(b, None)
+    return list(zip(a, b))
+
+dataset = []
 for i in range(0,len(theta1)):
     state = np.radians([theta1[i], w1, theta2[i], w2])
     y = integrate.odeint(derivs, state, t)
@@ -95,16 +111,35 @@ for i in range(0,len(theta1)):
     y1 = -L1*cos(y[:, 0])
     x2 = L2*sin(y[:, 2]) + x1
     y2 = -L2*cos(y[:, 2]) + y1
-    X1.append(x1)
-    X2.append(x2)
-    Y1.append(y1)
-    Y2.append(y2)
+    v_x1 = np.diff(x1)
+    v_x1 = np.insert(v_x1,obj=0,values=0)
+    v_x1 = v_x1/dt
+    v_x2 = np.diff(x2)
+    v_x2 = np.insert(v_x2,obj=0,values=0)
+    v_x2 = v_x2/dt
+    v_y1  = np.diff(y1)
+    v_y1 = np.insert(v_y1,obj=0,values=0)
+    v_y1 = v_y1/dt
+    v_y2 = np.diff(y2)
+    v_y2 = np.insert(v_y2,obj=0,values=0)
+    v_y2 = v_y2/dt
+    matrix = np.array([x1])
+    matrix = np.append(matrix,[y1],axis =0 )
+    matrix = np.append(matrix, [x2], axis=0)
+    matrix = np.append(matrix,[y2] , axis=0)
+    matrix = np.append(matrix, [v_x1], axis=0)
+    matrix = np.append(matrix,[v_x2], axis=0)
+    matrix = np.append(matrix, [v_y1], axis=0)
+    matrix = np.append(matrix, [v_y2], axis=0)
+    data = matrix.T
+    pair = pairwise(data)
+    dataset += pair
 
+print(len(dataset))
+
+with open('arbitraryangle.pickle', 'wb') as fp:
+    pickle.dump(dataset, fp)
 
 # list of list storing timeseries for different initial conditions (10 by 10000)
-X1 = np.array(X1)
-X2 = np.array(X2)
-Y1 = np.array(Y1)
-Y2 = np.array(Y2)
-t = np.arange(0.0, 100, dt)
+
 
