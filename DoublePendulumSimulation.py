@@ -137,6 +137,7 @@ for i in range(0,len(theta1)):
 
 print(len(dataset))
 
+#dataset is list of tuples that contains pair of two consecutive states
 with open('arbitraryangle.pickle', 'wb') as fp:
     pickle.dump(dataset, fp)
 
