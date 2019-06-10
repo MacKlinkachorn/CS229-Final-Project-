@@ -90,9 +90,17 @@ model.add(Dense(1))
 model.compile(loss='mae', optimizer='adam')
 # fit network
 history = model.fit(trainX, trainY, epochs=50, batch_size=72, validation_data=(testX, testY), verbose=2, shuffle=False)
+pyplot.plot(history.history['loss'], label='train')
+pyplot.plot(history.history['val_loss'], label='test')
+pyplot.legend()
+pyplot.show()
 
+# make a prediction
+yhat = model.predict(test_X)
 y_predict = model.predict(testX)
 
 print(y_predict)
 print(testY)
+plt.plot(testX,testY)
+plt.plot(testX,y_predict)
 # train
