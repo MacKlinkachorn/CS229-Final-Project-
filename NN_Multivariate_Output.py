@@ -44,8 +44,6 @@ pendulum_NN.add(Dense(8, kernel_initializer='normal',input_dim = train_data.shap
 #hidden layers
 #pendulum_NN.add(Dense(8, kernel_initializer='normal',activation='relu', kernel_regularizer=keras.regularizers.l2(l=0.1)))
 pendulum_NN.add(Dense(8, kernel_initializer='normal',activation='relu'))
-pendulum_NN.add(Dense(15, kernel_initializer='normal',activation='linear'))
-pendulum_NN.add(Dense(15, kernel_initializer='normal',activation='relu'))
 pendulum_NN.add(Dense(8, kernel_initializer='normal',activation='relu' ))
 #pendulum_NN.add(Dense(8 , kernel_initializer='normal',activation='relu'))
 # The Output Layer :
