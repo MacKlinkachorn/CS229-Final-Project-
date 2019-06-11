@@ -101,7 +101,7 @@ for i in range(0,len(theta1)):
     Y2.append(y2)
 
 
-# list of list storing timeseries for different initial conditions (10 by 10000)
+#list of list storing timeseries for different initial conditions (10 by 10000)
 X1 = np.array(X1)
 X2 = np.array(X2)
 Y1 = np.array(Y1)
