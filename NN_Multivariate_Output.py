@@ -1,5 +1,4 @@
-from double_pendulum_simulation_new import dataset
-from double_pendulum_simulation_new import theta1_0,theta2_0
+from DoublePendulumSimulation import dataset
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
@@ -60,8 +59,6 @@ callbacks_list = [checkpoint]
 
 pendulum_NN.fit(train_data, target_data, epochs=100, batch_size=100, validation_split = 0.2, callbacks=callbacks_list)
 
-print(theta1_0)
-print(theta2_0)
 
 
 #pendulum_NN.compile(loss='mean_absolute_error', optimizer='adam', metrics=['mean_absolute_error'])
