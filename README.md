@@ -4,3 +4,5 @@ To run the LSTM2 model, first run the createCSV file, all other files should be 
 
 
 Our poster can be seen below. 
+
+![229 Poster Pic](https://user-images.githubusercontent.com/13108145/59299024-978e6d00-8c40-11e9-8d01-ebffdb0972c5.jpg)
