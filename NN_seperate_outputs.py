@@ -1,4 +1,4 @@
-from double_pendulum_simulation_new import dataset
+from DoublePendulumSimulation import dataset
 import pandas as pd
 import tensorflow as tf
 from tensorflow import keras
